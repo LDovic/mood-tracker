@@ -1,13 +1,25 @@
 #include <stdio.h>
 
+FILE *file_pointer;
+
 int mood;
 int running;
-FILE *file_pointer;
+
+char green[] = "\033[0;32m";
+char yellow[] = "\033[1;33m";
+char red[] = "\033[0;31m";
+char default_color[] = "\033[0m";
 
 void setMood();
 
 int main () {
-    printf("Welcome to the mood tracker.\n");
+    file_pointer = fopen("file.csv", "w");
+    if (!file_pointer) {
+        printf("%sCannot open file. Exiting...\n%s", red, default_color);
+        return 0;
+    }
+
+    printf("%s -- Welcome to the mood tracker.%s\n", green, default_color);
     running = 1;
     while (running) {
         printf("(1) - Set new mood, (2) - View graph, (3) - quit\n");
@@ -21,8 +33,8 @@ int main () {
                 running = 0;
             break;
             default:
+	        printf("%sInvalid option. Exiting...\n%s", red, default_color);
                 running = 0;
-                printf("Invalid option. Exiting...\n");
         }
     }
 
@@ -33,7 +45,7 @@ void setMood() {
     file_pointer = fopen("file", "a");
     
     if (!file_pointer) {
-        printf("File not found.\n");
+        printf("%sFile not found.\n%s", red, default_color);
        return;
     }
 
@@ -45,3 +57,5 @@ void setMood() {
 
     fclose(file_pointer);
 }
+
+

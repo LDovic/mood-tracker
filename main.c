@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 FILE *file_pointer;
 
@@ -11,6 +12,7 @@ char red[] = "\033[0;31m";
 char default_color[] = "\033[0m";
 
 void setMood();
+void resetData();
 
 int main () {
     file_pointer = fopen("file.csv", "w");
@@ -22,18 +24,21 @@ int main () {
     printf("%s -- Welcome to the mood tracker.%s\n", green, default_color);
     running = 1;
     while (running) {
-        printf("(1) - Set new mood, (2) - View graph, (3) - quit\n");
-        scanf("%i", &running);
+        printf("(1) - Set new mood, (2) - View graph, (3) - Reset data, (4) - quit\n");
+        scanf("%i%*c", &running);
         switch (running) {
             case 1:
                 setMood();
             break;
             case 2:
             case 3:
+                resetData();
+            break;
+            case 4:
                 running = 0;
             break;
             default:
-	        printf("%sInvalid option. Exiting...\n%s", red, default_color);
+	            printf("%sInvalid option. Exiting...\n%s", red, default_color);
                 running = 0;
         }
     }
@@ -42,8 +47,8 @@ int main () {
 }
 
 void setMood() {
-    file_pointer = fopen("file", "a");
-    
+    file_pointer = fopen("file.csv", "a");
+
     if (!file_pointer) {
         printf("%sFile not found.\n%s", red, default_color);
        return;
@@ -52,10 +57,35 @@ void setMood() {
     printf("Please enter mood: ");
     scanf("%i", &mood);
     printf("Writing...\n");
-    
-    fprintf(file_pointer, "%d", mood);
+
+    fprintf(file_pointer, "%d,", mood);
 
     fclose(file_pointer);
+}
+
+void resetData() {
+    char reset_confirm;
+    printf("Are you sure you want to reset the data (y/n)?\n");
+    reset_confirm = getchar();
+
+    switch (reset_confirm) {
+        case 'y':
+        break;
+        case 'n':
+            return;
+        break;
+        default:
+            printf("%sInvalid option. Exiting...\n%s", red, default_color);
+            running = 0;
+            return;
+    }
+
+    if (remove("file.csv") == 0) {
+       printf("%sData reset.%s\n", green, default_color);
+       return;
+    }
+
+    printf("%sUnable to reset data.\n%s", red, default_color);
 }
 
 

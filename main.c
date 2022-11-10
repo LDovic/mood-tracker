@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 FILE *file_pointer;
 
@@ -12,6 +13,7 @@ char red[] = "\033[0;31m";
 char default_color[] = "\033[0m";
 
 void setMood();
+void viewGraph();
 void resetData();
 
 int main () {
@@ -31,6 +33,8 @@ int main () {
                 setMood();
             break;
             case 2:
+                viewGraph();
+            break;
             case 3:
                 resetData();
             break;
@@ -48,6 +52,7 @@ int main () {
 
 void setMood() {
     file_pointer = fopen("file.csv", "a");
+    time_t seconds;
 
     if (!file_pointer) {
         printf("%sFile not found.\n%s", red, default_color);
@@ -58,9 +63,16 @@ void setMood() {
     scanf("%i", &mood);
     printf("Writing...\n");
 
-    fprintf(file_pointer, "%d,", mood);
+    seconds = time(NULL);
+
+    fprintf(file_pointer, "%d,\n", mood);
+    fprintf(file_pointer, "%ld,", seconds);
 
     fclose(file_pointer);
+}
+
+void viewGraph() {
+    execl("~/mood-tracker", "echo hi", NULL);
 }
 
 void resetData() {

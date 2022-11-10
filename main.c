@@ -14,10 +14,16 @@ char default_color[] = "\033[0m";
 
 void setMood();
 void viewGraph();
+void createFile();
 void resetData();
 
 int main () {
-    file_pointer = fopen("file.csv", "w");
+    if (access("file.csv", F_OK) == 0) {
+        file_pointer = fopen("file.csv", "a");
+    } else {
+        createFile();
+    }
+
     if (!file_pointer) {
         printf("%sCannot open file. Exiting...\n%s", red, default_color);
         return 0;
@@ -60,19 +66,24 @@ void setMood() {
     }
 
     printf("Please enter mood: ");
-    scanf("%i", &mood);
+    scanf("%i*c", &mood);
     printf("Writing...\n");
 
     seconds = time(NULL);
 
-    fprintf(file_pointer, "%d,\n", mood);
-    fprintf(file_pointer, "%ld,", seconds);
+    fprintf(file_pointer, "\n%d,\n%ld", mood);
 
     fclose(file_pointer);
 }
 
 void viewGraph() {
     execl("~/mood-tracker", "echo hi", NULL);
+}
+
+void createFile() {
+    printf("%sInitialising new file...%s\n", yellow, default_color);
+    file_pointer = fopen("file.csv", "w");
+    fprintf(file_pointer, "%s,%s", "x", "y");
 }
 
 void resetData() {
@@ -94,6 +105,7 @@ void resetData() {
 
     if (remove("file.csv") == 0) {
        printf("%sData reset.%s\n", green, default_color);
+       createFile();
        return;
     }
 

@@ -68,11 +68,10 @@ void setMood() {
     printf("Please enter mood: ");
     scanf("%i*c", &mood);
     printf("Writing...\n");
-
+    
     seconds = time(NULL);
 
-    fprintf(file_pointer, "\n%d,\n%ld", mood);
-
+    fprintf(file_pointer, "%d,%ld\n", mood, seconds);
     fclose(file_pointer);
 }
 
@@ -83,7 +82,8 @@ void viewGraph() {
 void createFile() {
     printf("%sInitialising new file...%s\n", yellow, default_color);
     file_pointer = fopen("file.csv", "w");
-    fprintf(file_pointer, "%s,%s", "x", "y");
+    fprintf(file_pointer, "%s,%s\n", "x", "y");
+    fclose(file_pointer);
 }
 
 void resetData() {

@@ -76,7 +76,7 @@ void setMood() {
 }
 
 void viewGraph() {
-    execl("~/mood-tracker", "echo hi", NULL);
+    // openGL
 }
 
 void createFile() {

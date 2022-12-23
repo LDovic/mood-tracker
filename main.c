@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <GL/freeglut.h>
 
 FILE *file_pointer;
 
@@ -17,7 +18,7 @@ void viewGraph();
 void createFile();
 void resetData();
 
-int main () {
+int main (int argc, char** argv) {
     if (access("file.csv", F_OK) == 0) {
         file_pointer = fopen("file.csv", "a");
     } else {
@@ -39,7 +40,7 @@ int main () {
                 setMood();
             break;
             case 2:
-                viewGraph();
+                viewGraph(argc, argv);
             break;
             case 3:
                 resetData();
@@ -75,8 +76,32 @@ void setMood() {
     fclose(file_pointer);
 }
 
-void viewGraph() {
-    // openGL
+static void RenderSceneCB()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+    glutSwapBuffers();
+}
+
+void viewGraph(int argc, char** argv) {
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
+
+    int width = 1920;
+    int height = 1080;
+    glutInitWindowSize(width, height);
+
+    int x = 200;
+    int y = 100;
+    glutInitWindowPosition(x, y);
+    int win = glutCreateWindow("Tutorial 01");
+    printf("window id: %d\n", win);
+
+    GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;
+    glClearColor(Red, Green, Blue, Alpha);
+
+    glutDisplayFunc(RenderSceneCB);
+
+    glutMainLoop();
 }
 
 void createFile() {

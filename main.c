@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
+#include <GL/glew.h>
 #include <GL/freeglut.h>
 
 FILE *file_pointer;
@@ -17,6 +18,20 @@ void setMood();
 void viewGraph();
 void createFile();
 void resetData();
+
+struct Vector3f
+{
+    float x, y, z;
+
+    // Vector3f() {}
+
+    // Vector3f(float _x, float _y, float _z)
+    // {
+    //     x = _x;
+    //     y = _y;
+    //     z = _z;
+    // }
+};
 
 int main (int argc, char** argv) {
     if (access("file.csv", F_OK) == 0) {
@@ -82,6 +97,9 @@ static void RenderSceneCB()
     glutSwapBuffers();
 }
 
+static void CreateVertexBuffer() {
+}
+
 void viewGraph(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
@@ -96,8 +114,18 @@ void viewGraph(int argc, char** argv) {
     int win = glutCreateWindow("Tutorial 01");
     printf("window id: %d\n", win);
 
+    GLenum err = glewInit();
+
+    if (GLEW_OK != err) {
+        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+        running = 0;
+        return;
+    }
+
     GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;
     glClearColor(Red, Green, Blue, Alpha);
+
+    CreateVertexBuffer();
 
     glutDisplayFunc(RenderSceneCB);
 

@@ -15,7 +15,7 @@ char red[] = "\033[0;31m";
 char default_color[] = "\033[0m";
 
 void setMood();
-void viewGraph();
+void createGraph();
 void createFile();
 void resetData();
 
@@ -34,14 +34,14 @@ int main (int argc, char** argv) {
     printf("%s -- Welcome to the mood tracker.%s\n", green, default_color);
     running = 1;
     while (running) {
-        printf("(1) - Set new mood, (2) - View graph, (3) - Reset data, (4) - quit\n");
+        printf("(1) - Set new mood, (2) - Create graph, (3) - Reset data, (4) - quit\n");
         scanf("%i%*c", &running);
         switch (running) {
             case 1:
                 setMood();
             break;
             case 2:
-                viewGraph();
+                createGraph();
             break;
             case 3:
                 resetData();
@@ -77,7 +77,8 @@ void setMood() {
     fclose(file_pointer);
 }
 
-void viewGraph() {
+void createGraph() {
+    system("./line-graph.r");
 }
 
 void createFile() {

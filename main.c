@@ -78,7 +78,8 @@ void setMood() {
 }
 
 void createGraph() {
-    system("./line-graph.r");
+    printf("%sCreating graph...\n%s", green, default_color);
+    system("./line-graph.r > /dev/null");
 }
 
 void createFile() {

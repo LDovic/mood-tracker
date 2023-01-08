@@ -19,20 +19,6 @@ void viewGraph();
 void createFile();
 void resetData();
 
-struct Vector3f
-{
-    float x, y, z;
-
-    // Vector3f() {}
-
-    // Vector3f(float _x, float _y, float _z)
-    // {
-    //     x = _x;
-    //     y = _y;
-    //     z = _z;
-    // }
-};
-
 int main (int argc, char** argv) {
     if (access("file.csv", F_OK) == 0) {
         file_pointer = fopen("file.csv", "a");
@@ -55,7 +41,7 @@ int main (int argc, char** argv) {
                 setMood();
             break;
             case 2:
-                viewGraph(argc, argv);
+                viewGraph();
             break;
             case 3:
                 resetData();
@@ -91,45 +77,7 @@ void setMood() {
     fclose(file_pointer);
 }
 
-static void RenderSceneCB()
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-    glutSwapBuffers();
-}
-
-static void CreateVertexBuffer() {
-}
-
-void viewGraph(int argc, char** argv) {
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA|GLUT_DEPTH);
-
-    int width = 1920;
-    int height = 1080;
-    glutInitWindowSize(width, height);
-
-    int x = 200;
-    int y = 100;
-    glutInitWindowPosition(x, y);
-    int win = glutCreateWindow("Tutorial 01");
-    printf("window id: %d\n", win);
-
-    GLenum err = glewInit();
-
-    if (GLEW_OK != err) {
-        fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
-        running = 0;
-        return;
-    }
-
-    GLclampf Red = 0.0f, Green = 0.0f, Blue = 0.0f, Alpha = 0.0f;
-    glClearColor(Red, Green, Blue, Alpha);
-
-    CreateVertexBuffer();
-
-    glutDisplayFunc(RenderSceneCB);
-
-    glutMainLoop();
+void viewGraph() {
 }
 
 void createFile() {

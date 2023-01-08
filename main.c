@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-#include <GL/glew.h>
-#include <GL/freeglut.h>
+#include <stdlib.h>
 
 FILE *file_pointer;
 
